@@ -11,9 +11,9 @@ Reloader.reloadFile = (path) => {
 
 Reloader.startReloading = (files) => {
   setTimeout(function() {
-    console.log("--- reloading ---");
+    console.log("--- reloading ---", new Date().getTime());
     files.map(Reloader.reloadFile);
-  }, 1500);
+  }, 2000);
 };
 Reloader.startReloading(["build/yome.js"]);
 
@@ -28,7 +28,24 @@ Yome.initialState = () => {
 }
 
 Yome.state = Yome.state || Yome.initialState();
-l(Yome.state);
+Yome.sideCount=(st)=>st.sides.length;
+Yome.sliceTheta=(st)=>2 * Math.PI / Yome.sideCount(st)
 
+Yome.rotate=(theta,point)=>{
+  const sint=Math.sin(theta), cost= Math.cos(theta);
+  return { x: (point.x * cost) -(point.y * sint),
+          y: (point.x * sint) + (point.y * cost)};
+}
+
+Yome.radialPoint = (radius, theta) =>
+  Yome.rotate(theta, {x: 0, y: radius})
+
+l(Yome.rotate(Math.PI, {x: 0, y: 1}));
+
+//l(Yome.state);
+//l(Yome.sideCount(Yome.state));
+//l(Yome.sliceTheta(Yome.state));
+//l(Yome.rotate(Math.PI, {x: 0, y: 1}));
+//l(Yome.radialPoint(100, Math.PI));
 
 })();
