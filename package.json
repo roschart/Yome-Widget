@@ -1,0 +1,27 @@
+{
+  "name": "yome-widget",
+  "version": "0.1.0",
+  "description": "learning project",
+  "main": "index.js",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "babel": "^6.3.13"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/roschart/yome-widget.git"
+  },
+  "keywords": [
+    "functional"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/roschart/yome-widget/issues"
+  },
+  "homepage": "https://github.com/roschart/yome-widget#readme"
+}
