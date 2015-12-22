@@ -57,6 +57,9 @@
     return st.sides.map((_, i) => Yome.radialPoint(180, i * Yome.sliceTheta(st)))
   }
 
+  Yome.pointsToPointsString = (points) =>
+  points.map(p => p.x + "," + p.y).join(" ")
+
   //l(Yome.state);
   //l(Yome.sideCount(Yome.state));
   //l(Yome.sliceTheta(Yome.state));
@@ -64,5 +67,6 @@
   //l(Yome.radialPoint(100, Math.PI));
   //l(Yome.rotate(Math.PI, {x: 0, y: 1}));
   //l(Yome.sidePoints(Yome.initialState()))
+  l(Yome.pointsToPointsString(Yome.sidePoints(Yome.initialState())))
 
 })();
