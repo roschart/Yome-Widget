@@ -60,6 +60,10 @@
   Yome.pointsToPointsString = (points) =>
   points.map(p => p.x + "," + p.y).join(" ")
 
+  Yome.drawWalls = (state) =>
+  <polygon points={Yome.pointsToPointsString(Yome.sidePoints(state))}>
+  </polygon>
+
   //l(Yome.state);
   //l(Yome.sideCount(Yome.state));
   //l(Yome.sliceTheta(Yome.state));
