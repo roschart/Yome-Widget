@@ -28,7 +28,7 @@
 
     Yome.initialState = () => {
       return {
-        sides: [1, 2, 3, 4, 5, 6, 7, 8].map(() => {})
+        sides: [1, 2, 3, 4, 5, 6, 7 ,8].map(() => {})
       }
     }
 
@@ -80,6 +80,14 @@
     children
   } </svg>
 
+  Yome.windowPoints = (st) => {
+  const theta = Yome.sliceTheta(st),
+        indent = theta / 6;
+  return [Yome.radialPoint(160, indent),
+          Yome.radialPoint(160, theta - indent),
+          Yome.radialPoint(100, theta / 2)];
+}
+
   Yome.playArea = (children) =>
     React.render(Yome.svgWorld(children), document.getElementById("playarea"))
 
@@ -87,9 +95,33 @@
     React.unmountComponentAtNode(document.getElementById("playarea"))
 
   Yome.playArea(Yome.drawWalls({sides: [1,2,3,4,5,6,7,8]}))
+
+  Yome.drawWindow = (st) =>
+    <polygon points={ Yome.pointsToPointsString(Yome.windowPoints(st)) }>
+    </polygon>
+
+  Yome.doorPoints = (st) => {
+    const indent = Yome.sliceTheta(st) / 8;
+    return [Yome.radialPoint(165, indent ),
+            Yome.radialPoint(165, -indent),
+            Yome.radialPoint(90,  -indent),
+            Yome.radialPoint(90, indent)];
+  }
+
+  Yome.drawDoor = (st) =>
+    <polygon points={ Yome.pointsToPointsString(Yome.doorPoints(st)) }>
+    </polygon>
+
+
+
+  Yome.playArea(<g>{Yome.drawWindow(Yome.state)}
+                  {Yome.drawWalls(Yome.state)}
+                  {Yome.drawDoor(Yome.state)
+                  }</g>)
+
+
   //Yome.playArea(Yome.drawWalls({sides: [1,2,3,4,5,6,7]}))
   //Yome.playArea(Yome.drawWalls({sides: [1,2,3,4,5,6,7,8]}))
 
   //Yome.clearPlayArea()
-
 })();
