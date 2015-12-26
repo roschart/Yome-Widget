@@ -61,8 +61,8 @@
   points.map(p => p.x + "," + p.y).join(" ")
 
   Yome.drawWalls = (state) =>
-  <polygon points={Yome.pointsToPointsString(Yome.sidePoints(state))}>
-  </polygon>
+    <polygon points={Yome.pointsToPointsString(Yome.sidePoints(state))}>
+    </polygon>
 
   //l(Yome.state);
   //l(Yome.sideCount(Yome.state));
