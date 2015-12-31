@@ -175,9 +175,22 @@ Yome.itemRender = (type, st) =>
     { st.sides.map((side, i) => Yome.sideSlice(st,i)) }
   </g>
 
+
+  Yome.widget = (st) =>
+    <div className="yome-widget">
+      <div className="yome-widget-body">
+       { Yome.svgWorld(Yome.drawYome(st)) }
+      </div>
+    </div>
+
+  Yome.render = () =>
+    React.render(Yome.widget(Yome.state), document.getElementById('app'))
+
+  Yome.render();
+
 //Play Area
 
-  Yome.playArea(Yome.drawYome(Yome.exampleData))
+  //Yome.playArea(Yome.drawYome(Yome.exampleData))
   //Yome.playArea(Yome.drawWalls({sides: [1,2,3,4,5,6,7]}))
   //Yome.playArea(Yome.drawWalls({sides: [1,2,3,4,5,6,7,8]}))
 
