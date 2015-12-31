@@ -149,10 +149,7 @@ Yome.itemRender = (type, st) =>
 
 
   Yome.exampleData = ((state)=>{
-    console.log("coño:" ,state.sides[0])
     state.sides[0].face = "window"
-    console.log("despues:" ,state.sides[0])
-
     state.sides[0].corner = "zip-door"
     state.sides[3].face = "window"
     state.sides[5].corner = "door-frame"
@@ -161,17 +158,27 @@ Yome.itemRender = (type, st) =>
     return state
   })(Yome.initialState())
 
-  l(JSON.stringify(Yome.exampleData))
+  Yome.sliceDeg = (st) => 360 / Yome.sideCount(st)
 
+  Yome.sideSlice = (st, i) => {
+    const side = st.sides[i];
+    if(side.corner || side.face)
+      return  <g transform={ "rotate(" +  (Yome.sliceDeg(st) * i) + ",0,0)" }>
+        {Yome.itemRender(side.corner, st)}
+        {Yome.itemRender(side.face,   st)}
+      </g>
+  }
 
 //Play Area
-  Yome.playArea(<g>{Yome.drawWindow(Yome.state)}
-                  {Yome.drawWalls(Yome.state)}
-                  {Yome.drawDoor(Yome.state)}
-                  {Yome.drawZipDoor(Yome.state)}
-                  {Yome.drawStoveVent(Yome.state)}
+  // Yome.playArea(<g>{Yome.drawWindow(Yome.state)}
+  //                 {Yome.drawWalls(Yome.state)}
+  //                 {Yome.drawDoor(Yome.state)}
+  //                 {Yome.drawZipDoor(Yome.state)}
+  //                 {Yome.drawStoveVent(Yome.state)}
+  //
+  //                 </g>)
 
-                  </g>)
+  Yome.playArea(Yome.sideSlice(Yome.exampleData, 5))
 
 
   //Yome.playArea(Yome.drawWalls({sides: [1,2,3,4,5,6,7]}))
