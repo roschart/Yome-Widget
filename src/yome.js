@@ -31,7 +31,7 @@
         sides: [1, 2, 3, 4, 5, 6, 7 ,8].map(() => new Object())
       }
     }
-
+    l(Yome.state)
     Yome.state = Yome.state || Yome.initialState();
     Yome.sideCount = (st) => st.sides.length;
     Yome.sliceTheta = (st) => 2 * Math.PI / Yome.sideCount(st)
@@ -64,21 +64,12 @@
       } >
       </polygon>
 
-    //l(Yome.state);
-    //l(Yome.sideCount(Yome.state));
-    //l(Yome.sliceTheta(Yome.state));
-    //l(Yome.rotate(Math.PI, {x: 0, y: 1}));
-    //l(Yome.radialPoint(100, Math.PI));
-    //l(Yome.rotate(Math.PI, {x: 0, y: 1}));
-    //l(Yome.sidePoints(Yome.initialState()))
-    //l(Yome.pointsToPointsString(Yome.sidePoints(Yome.initialState())))
     Yome.svgWorld = (children) =>
       <svg height = "500"
-  width = "500"
-  viewBox = "-250 -250 500 500"
-  preserveAspectRatio = "xMidYMid meet" > {
-    children
-  } </svg>
+          width = "500"
+          viewBox = "-250 -250 500 500"
+          preserveAspectRatio = "xMidYMid meet" > {children}
+        </svg>
 
   Yome.windowPoints = (st) => {
   const theta = Yome.sliceTheta(st),
@@ -87,12 +78,6 @@
           Yome.radialPoint(160, theta - indent),
           Yome.radialPoint(100, theta / 2)];
 }
-
-  Yome.playArea = (children) =>
-    React.render(Yome.svgWorld(children), document.getElementById("playarea"))
-
-  Yome.clearPlayArea = () =>
-    React.unmountComponentAtNode(document.getElementById("playarea"))
 
 
   Yome.drawWindow = (st) =>
@@ -147,17 +132,6 @@
 Yome.itemRender = (type, st) =>
   (Yome.itemRenderDispatch[type] || (x => null))(st)
 
-
-  Yome.exampleData = ((state)=>{
-    state.sides[0].face = "window"
-    state.sides[0].corner = "zip-door"
-    state.sides[3].face = "window"
-    state.sides[5].corner = "door-frame"
-    state.sides[5].face = "window"
-    state.sides[7].corner = "stove-vent"
-    return state
-  })(Yome.initialState())
-
   Yome.sliceDeg = (st) => 360 / Yome.sideCount(st)
 
   Yome.sideSlice = (st, i) => {
@@ -187,7 +161,6 @@ Yome.itemRender = (type, st) =>
     let nArray = Array.apply(null, Array(parseInt(new_count)));
     Yome.state.sides = nArray.map((_,i) => Yome.state.sides[i] || {});
   }
-  Yome.changeSideCount(7)
 
   Yome.sideOptions = () => ["HexaYome", "SeptaYome", "OctaYome"]
     .map((l, v) => <option value={v + 6}>{l}</option>)
@@ -201,12 +174,70 @@ Yome.itemRender = (type, st) =>
       </select>
     </div>
 
+    Yome.worldPosition = (point) => ({ x: point.x + 250, y: point.y + 250})
+
+    Yome.addRemoveWindow = (i) =>
+      (_) => {
+        const side = Yome.state.sides[i];
+        side.face = (!side.face ? "window" : null);
+      }
+
+    Yome.windowControl = (st, side, i) => {
+      let theta = Yome.sliceTheta(st) * (i + 1),
+          pos   = Yome.worldPosition(Yome.radialPoint(200, theta)),
+          add   = !side.face;
+      return (<div className="control-holder" style={ { top:  pos.y,
+                                                       left: pos.x } }>
+        <a className={ "window-control-offset " +
+                       (add ? "add" : "remove")}
+           onClick={ Yome.eventHandler(Yome.addRemoveWindow(i)) }
+           href="#">
+           { add ? "+ window" : "- window" }
+        </a>
+      </div>)
+    }
+
+
+    Yome.windowControls = (st) =>
+      st.sides.map((side, i) => Yome.windowControl(st, side, i))
+
+
+    Yome.addRemoveConer = (i,type) =>
+      (_) => {
+        const side = Yome.state.sides[i];
+        side.corner = (!side.corner ? type : null);
+      }
+
+
+    Yome.cornerControl = (st, side, i) => {
+      let theta = Yome.sliceTheta(st) * (i+1),
+          pos   = Yome.worldPosition(Yome.radialPoint(250, theta)),
+          add   = !side.corner;
+      return (
+        ["zip-door", "door-frame", "stove-vent"].map((e,t)=>
+        <div className="control-holder" style={ { top:  pos.y+t*15,
+                                                       left: pos.x } }>
+
+        <a className={ "window-control-offset " +
+                       (add ? "add" : "remove")}
+           onClick={ Yome.eventHandler(Yome.addRemoveConer(i, e)) }
+           href="#">
+           { add ? ("+" +e) : "- corner" }
+        </a>
+      </div>))
+    }
+
+    Yome.cornerControls = (st) =>
+      st.sides.map((side, i) => Yome.cornerControl(st, side, i))
+
 
 //Widget
   Yome.widget = (st) =>
     <div className="yome-widget">
       { Yome.sideCountInput(st) }
       <div className="yome-widget-body">
+       { Yome.windowControls(st) }
+       { Yome.cornerControls(st) }
        { Yome.svgWorld(Yome.drawYome(st)) }
       </div>
     </div>
@@ -216,11 +247,4 @@ Yome.itemRender = (type, st) =>
 
   Yome.render();
 
-//Play Area
-
-  //Yome.playArea(Yome.drawYome(Yome.exampleData))
-  //Yome.playArea(Yome.drawWalls({sides: [1,2,3,4,5,6,7]}))
-  //Yome.playArea(Yome.drawWalls({sides: [1,2,3,4,5,6,7,8]}))
-
-  //Yome.clearPlayArea()
 })();
