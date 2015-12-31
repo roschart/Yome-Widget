@@ -208,11 +208,12 @@ Yome.itemRender = (type, st) =>
 
 
     Yome.cornerControl = (st, side, i) => {
-      let theta = Yome.sliceTheta(st) * (i+1),
-          pos   = Yome.worldPosition(Yome.radialPoint(250, theta)),
+      let theta = -0.4 + Yome.sliceTheta(st) * (i+1),
+          pos   = Yome.worldPosition(Yome.radialPoint(235, theta)),
           add   = !side.corner;
+      let options= add ? ["zip-door", "door-frame", "stove-vent"] : ["remove"]
       return (
-        ["zip-door", "door-frame", "stove-vent"].map((e,t)=>
+        options.map((e,t)=>
         <div className="control-holder" style={ { top:  pos.y+t*15,
                                                        left: pos.x } }>
 
