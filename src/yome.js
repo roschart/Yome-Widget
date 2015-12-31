@@ -163,24 +163,21 @@ Yome.itemRender = (type, st) =>
   Yome.sideSlice = (st, i) => {
     const side = st.sides[i];
     if(side.corner || side.face)
-      return  <g transform={ "rotate(" +  (Yome.sliceDeg(st) * i) + ",0,0)" }>
+      return  (<g transform={ "rotate(" +  (Yome.sliceDeg(st) * i) + ",0,0)" }>
         {Yome.itemRender(side.corner, st)}
         {Yome.itemRender(side.face,   st)}
-      </g>
+      </g>)
   }
 
+  Yome.drawYome = (st) =>
+  <g transform={ "rotate(" + (Yome.sliceDeg(st) / 2) + ",0,0)" }>
+    { Yome.drawWalls(st) }
+    { st.sides.map((side, i) => Yome.sideSlice(st,i)) }
+  </g>
+
 //Play Area
-  // Yome.playArea(<g>{Yome.drawWindow(Yome.state)}
-  //                 {Yome.drawWalls(Yome.state)}
-  //                 {Yome.drawDoor(Yome.state)}
-  //                 {Yome.drawZipDoor(Yome.state)}
-  //                 {Yome.drawStoveVent(Yome.state)}
-  //
-  //                 </g>)
 
-  Yome.playArea(Yome.sideSlice(Yome.exampleData, 5))
-
-
+  Yome.playArea(Yome.drawYome(Yome.exampleData))
   //Yome.playArea(Yome.drawWalls({sides: [1,2,3,4,5,6,7]}))
   //Yome.playArea(Yome.drawWalls({sides: [1,2,3,4,5,6,7,8]}))
 
