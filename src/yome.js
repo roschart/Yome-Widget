@@ -28,7 +28,7 @@
 
     Yome.initialState = () => {
       return {
-        sides: [1, 2, 3, 4, 5, 6, 7 ,8].map(() => {})
+        sides: [1, 2, 3, 4, 5, 6, 7 ,8].map(() => new Object())
       }
     }
 
@@ -94,7 +94,6 @@
   Yome.clearPlayArea = () =>
     React.unmountComponentAtNode(document.getElementById("playarea"))
 
-  Yome.playArea(Yome.drawWalls({sides: [1,2,3,4,5,6,7,8]}))
 
   Yome.drawWindow = (st) =>
     <polygon points={ Yome.pointsToPointsString(Yome.windowPoints(st)) }>
@@ -136,6 +135,36 @@
                     key="stove-vent"></ellipse>
   }
 
+  //Dispathc
+
+  Yome.itemRenderDispatch = {
+  "window":     Yome.drawWindow,
+  "door-frame": Yome.drawDoor,
+  "zip-door":   Yome.drawZipDoor,
+  "stove-vent": Yome.drawStoveVent,
+}
+
+Yome.itemRender = (type, st) =>
+  (Yome.itemRenderDispatch[type] || (x => null))(st)
+
+
+  Yome.exampleData = ((state)=>{
+    console.log("coño:" ,state.sides[0])
+    state.sides[0].face = "window"
+    console.log("despues:" ,state.sides[0])
+
+    state.sides[0].corner = "zip-door"
+    state.sides[3].face = "window"
+    state.sides[5].corner = "door-frame"
+    state.sides[5].face = "window"
+    state.sides[7].corner = "stove-vent"
+    return state
+  })(Yome.initialState())
+
+  l(JSON.stringify(Yome.exampleData))
+
+
+//Play Area
   Yome.playArea(<g>{Yome.drawWindow(Yome.state)}
                   {Yome.drawWalls(Yome.state)}
                   {Yome.drawDoor(Yome.state)}
