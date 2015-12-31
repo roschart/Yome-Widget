@@ -188,6 +188,11 @@ Yome.itemRender = (type, st) =>
 
   Yome.render();
 
+
+
+  //side effecting
+  Yome.eventHandler = (f) =>
+    (e => {e.preventDefault(); f(e.target.value); Yome.render()})
 //Play Area
 
   //Yome.playArea(Yome.drawYome(Yome.exampleData))
