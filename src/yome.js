@@ -193,6 +193,15 @@ Yome.itemRender = (type, st) =>
   //side effecting
   Yome.eventHandler = (f) =>
     (e => {e.preventDefault(); f(e.target.value); Yome.render()})
+
+  Yome.changeSideCount = (new_count) => {
+    let nArray = Array.apply(null, Array(parseInt(new_count)));
+    Yome.state.sides = nArray.map((_,i) => Yome.state.sides[i] || {});
+  }
+  Yome.changeSideCount(7)
+  Yome.render();
+
+
 //Play Area
 
   //Yome.playArea(Yome.drawYome(Yome.exampleData))
