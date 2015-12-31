@@ -176,17 +176,6 @@ Yome.itemRender = (type, st) =>
   </g>
 
 
-  Yome.widget = (st) =>
-    <div className="yome-widget">
-      <div className="yome-widget-body">
-       { Yome.svgWorld(Yome.drawYome(st)) }
-      </div>
-    </div>
-
-  Yome.render = () =>
-    React.render(Yome.widget(Yome.state), document.getElementById('app'))
-
-  Yome.render();
 
 
 
@@ -199,8 +188,33 @@ Yome.itemRender = (type, st) =>
     Yome.state.sides = nArray.map((_,i) => Yome.state.sides[i] || {});
   }
   Yome.changeSideCount(7)
-  Yome.render();
 
+  Yome.sideOptions = () => ["HexaYome", "SeptaYome", "OctaYome"]
+    .map((l, v) => <option value={v + 6}>{l}</option>)
+
+  Yome.sideCountInput = st =>
+    <div className="top-control">
+      <span> Size of Yome </span>
+      <select onChange={ Yome.eventHandler(Yome.changeSideCount) }
+              value={ Yome.sideCount(st) }>
+        { Yome.sideOptions() }
+      </select>
+    </div>
+
+
+//Widget
+  Yome.widget = (st) =>
+    <div className="yome-widget">
+      { Yome.sideCountInput(st) }
+      <div className="yome-widget-body">
+       { Yome.svgWorld(Yome.drawYome(st)) }
+      </div>
+    </div>
+
+  Yome.render = () =>
+    React.render(Yome.widget(Yome.state), document.getElementById('app'))
+
+  Yome.render();
 
 //Play Area
 
