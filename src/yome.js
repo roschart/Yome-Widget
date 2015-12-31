@@ -1,5 +1,3 @@
-(function() {
-    "use strict";
     var Reloader = Reloader || {};
 
     Reloader.reloadFile = (path) => {
@@ -246,5 +244,3 @@ Yome.itemRender = (type, st) =>
     React.render(Yome.widget(Yome.state), document.getElementById('app'))
 
   Yome.render();
-
-})();
